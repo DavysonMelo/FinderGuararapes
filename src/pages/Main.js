@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Home from '../components/Home';
+import Home from './Home';
 import Settings from './Settings';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Matches from '../components/Matches';
+import Matches from './Matches';
 const Tab = createMaterialTopTabNavigator();
 
 function Main(){
+
+    function getHeaderTitle(route) {
+        const routeName = route.state
+            ? route.state.routes[route.state.index].name
+            : route.params?.screen || 'Home';
+            
+            switch (routeName) {
+                case 'Profile':
+                    console.log('Home');
+                case 'PhotoUploader':
+                    console.log('Media');
+                case 'UpdateUser':
+                    console.log('Edit');
+            }
+    }
 
     return(
             <Tab.Navigator

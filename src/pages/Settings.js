@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Profile from '../components/Profile';
-import PhotoUploader from '../components/PhotoUploader';
-import ProfileSettings from '../components/ProfileSettings';
-import UpdateUser from '../components/UpdateUser';
+import Profile from './Profile';
+import PhotoUploader from './PhotoUploader';
+import ProfileSettings from './ProfileSettings';
+import UpdateUser from './UpdateUser';
 
 const Stack = createStackNavigator();
 
-function MyStack({navigation}) {
+function MyStack() {
 
     return(
         <Stack.Navigator
