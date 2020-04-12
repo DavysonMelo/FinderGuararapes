@@ -1,44 +1,60 @@
-import React, {useState, useEffect} from 'react';
-import { SafeAreaView, StyleSheet, Image, Text, View, TouchableOpacity, AsyncStorage } from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import { SafeAreaView, StyleSheet, Image, Text, View, TouchableOpacity, AsyncStorage, BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import Back from 'react-native-vector-icons/Ionicons';
+import styles from './styles';
 
-import styles from './Styles';
+import BackButton from '../../components/backButton';
 
-function ProfileSettings({ navigation }) {
+import HeaderContext from '../../components/context';
+
+export default function ProfileSettings() {
+    const navigation = useNavigation();
+    const { toggleView } = useContext(HeaderContext);
 
     const [user, setUser] = useState('');
 
-    function handleBack() {
-        navigation.navigate('Profile');
-    }
-
     useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            toggleView
+        );
+
         async function getUser(){
             const item = await AsyncStorage.getItem('user');
             const parsedItem = JSON.parse(item);
             setUser(parsedItem);
         }
         getUser();
+
+        return () => backHandler.remove();
     }, []);
+
+    function handleBack() {
+        toggleView();
+        navigation.goBack();
+    }
+
+    navigation.setOptions({
+        headerLeft: () => (
+            <BackButton onPress={handleBack}/>
+        )
+    });
+
+    async function handleLogout() {
+      await AsyncStorage.clear()
+
+      navigation.navigate('Login');
+    }
 
     return(
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity 
-                    style={styles.btnBack}
-                    onPress={handleBack}
-                >
-                    <Back name='ios-arrow-back' size={35} color='#61a8fa'/>
-                    <Text style={styles.backText}>Voltar</Text>
-                </TouchableOpacity>
-            </View>
-            {
-                !user ? <Text>Nada</Text>
-                : <Text>{`${user}`}</Text>
-            }
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={styles.logoutButton}
+            >
+              <Text style={styles.logoutText}>Sair</Text>
+            </TouchableOpacity>
         </View>
     )
 }
-
-export default ProfileSettings;

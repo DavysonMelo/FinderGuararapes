@@ -8,22 +8,21 @@ export default StyleSheet.create({
         alignItems: 'center',
         padding: 20
     },
-    logo: {
-        width: 175,
-        height: 45,
-        resizeMode: 'contain'
-    },
+
     empty: {
         alignSelf: 'center',
+        marginTop: '50%',
         color: '#999',
         fontSize: 24,
         fontWeight: 'bold'
     },
+
     cardsContainer: {
         flex: 1,
         alignSelf: 'stretch',
-        maxHeight: 400,
+        maxHeight: '85%',
     },
+
     card: {
         borderWidth: 1,
         borderColor: '#ddd',
@@ -36,34 +35,53 @@ export default StyleSheet.create({
         right: 0,
         bottom: 0
     },
+
     avatar: {
         flex: 1,
-        height: 500
+        height: '100%',
     },
+
     footer: {
-        backgroundColor: '#fff',
-        paddingHorizontal: 20,
-        paddingVertical: 15
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 15,
+      alignSelf: 'flex-end',
+      width: '90%',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      paddingVertical: 10,
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10
     },
+
     name:{
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#333'
+        color: '#333',
+        marginHorizontal: 15
     },
+
     bio: {
         fontSize: 14,
         color: '#999',
         marginTop: 5,
-        lineHeight: 18
+        lineHeight: 18,
+        marginHorizontal: 15
     },
+
+    info: {
+      zIndex: 0,
+      alignSelf: 'flex-end',
+      marginRight: 10
+    },
+
     buttonsContainer: {
-        flexDirection: 'row',
-        marginTop: 15
+        flexDirection: 'row'
     },
+
     button: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
         backgroundColor: '#FFF',
         justifyContent: 'center',
         alignItems: 'center',

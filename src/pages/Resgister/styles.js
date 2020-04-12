@@ -8,21 +8,7 @@ export default StyleSheet.create({
 
     form: {
         justifyContent: 'center',
-        padding: 30,
-    },
-
-    header:{
-        zIndex: 1,
-        width: '100%',
-        height: 71,
-        position: 'absolute',
-        backgroundColor: '#f5f5f5'
-    },
-
-    btnBack: {
-        marginTop: 30,
-        marginLeft: 10,
-        flexDirection:'row'
+        padding: 30
     },
 
     backText: {
@@ -30,7 +16,7 @@ export default StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'center',
-        color: '#61a8fa'
+        color: '#009dff'
     },
 
     logo: {

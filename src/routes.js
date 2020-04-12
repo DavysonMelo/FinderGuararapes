@@ -13,21 +13,39 @@ function MyStack() {
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName = 'Login'
-                headerMode='none'
             >
                 <Stack.Screen
                     name='Login'
-                    component={Login} 
+                    component={Login}
+                    options={{
+                        headerShown: false
+                    }} 
                 />
 
                 <Stack.Screen
                     name='Main'
-                    component={Main} 
+                    component={Main}
+                    options={{
+                        headerShown: false
+                    }}
                 />
 
                 <Stack.Screen
                     name='Register'
                     component={Register}
+                    options={{
+                        headerStyle:{
+                            backgroundColor: '#f5f5f5',
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            shadowOffset:{
+                                height: 0
+                            }
+                        },
+                        headerTitleStyle:{
+                            display: 'none'
+                        }
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>

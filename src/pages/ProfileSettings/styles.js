@@ -3,21 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5'
-    },
-
-    header:{
-        zIndex: 1,
-        width: '100%',
-        height: 46,
-        position: 'absolute',
-        backgroundColor: '#f5f5f5'
-    },
-
-    btnBack: {
-        marginTop: 30,
-        marginLeft: 10,
-        flexDirection:'row'
+        backgroundColor: '#f5f5f5',
+        justifyContent: 'center'
     },
 
     backText: {
@@ -25,6 +12,20 @@ export default StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'center',
-        color: '#61a8fa'
+        color: '#009dff'
     },
+
+    logoutButton: {
+      borderWidth: 1,
+      backgroundColor: '#FFF',
+      borderColor: '#e5e5e5',
+      paddingVertical: 15,
+      alignItems: 'center'
+    },
+
+    logoutText: {
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: '#6e6e6e'
+    }
 });

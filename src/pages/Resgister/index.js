@@ -9,7 +9,7 @@ import LoadingModal from '../../components/LoadingModal';
 
 import logo from '../../assets/logo.png';
 import Icon from 'react-native-vector-icons/Foundation';
-import Back from 'react-native-vector-icons/Ionicons';
+import BackButton from '../../components/backButton';
 import { Alert } from 'react-native';
 
 import styles from './styles';
@@ -49,6 +49,12 @@ function Register({ navigation }){
     function handleBack() {
         navigation.navigate('Login');
     }
+
+    navigation.setOptions({
+        headerLeft: () => (
+            <BackButton onPress={handleBack}/>
+        )
+    });
     
     function onChangeDate(event, selectedDate) {
         const currentDate = selectedDate || date;
@@ -194,17 +200,8 @@ function Register({ navigation }){
     return (
             <View style={styles.container}>
                 <LoadingModal visible={modalVisible}/>
-                <View style={styles.header}>
-                    <TouchableOpacity 
-                        style={styles.btnBack}
-                        onPress={handleBack}
-                    >
-                        <Back style={styles.back} name='ios-arrow-back' size={35} color='#61a8fa'/>
-                        <Text style={styles.backText}>Voltar</Text>
-                    </TouchableOpacity>
-                </View>
 
-                <ScrollView style={{marginTop: 46}}>
+                <ScrollView>
                 <View style={styles.form}>
 
                     <Image style={styles.logo} source={logo}/>

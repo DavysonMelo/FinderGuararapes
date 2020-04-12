@@ -1,34 +1,29 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useMemo } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Home from './Home';
+import Info from './Info';
 import Settings from './Settings';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Matches from './Matches';
+
 const Tab = createMaterialTopTabNavigator();
 
-function Main(){
+import HeaderContext from "../components/context";
 
-    function getHeaderTitle(route) {
-        const routeName = route.state
-            ? route.state.routes[route.state.index].name
-            : route.params?.screen || 'Home';
-            
-            switch (routeName) {
-                case 'Profile':
-                    console.log('Home');
-                case 'PhotoUploader':
-                    console.log('Media');
-                case 'UpdateUser':
-                    console.log('Edit');
-            }
+function Main() {
+    const [showHeader, setShowHeader] = useState(true);
+    const displayHeader = useMemo(() => (showHeader === true ? 'flex' : 'none'), [
+        showHeader
+    ]);
+
+    function toggleView() {
+        setShowHeader(!showHeader);
     }
 
     return(
+        <HeaderContext.Provider value={{ toggleView }}>
             <Tab.Navigator
-
+                swipeEnabled={showHeader}
                 tabBarOptions={{
                     activeTintColor: "#ef790e",
                     inactiveTintColor: "#7f7f7f",
@@ -49,10 +44,11 @@ function Main(){
                         },
                         shadowRadius: 0,
                         elevation: 0,
-                        backgroundColor: '#f5f5f5'
+                        backgroundColor: '#f5f5f5',
+                        display: displayHeader
                     }
                 }}
-                initialRouteName='Home'
+                initialRouteName='Info'
             >
                 <Tab.Screen
                     name= 'Settings' component={Settings}
@@ -63,7 +59,7 @@ function Main(){
                     }}
                 />
                 <Tab.Screen
-                    name= 'Home' component={Home}
+                    name= 'Info' component={Info}
                     options={{
                         tabBarIcon: ({color})=>(
                             <Icon name='fire' size={25} color={color}/>
@@ -74,11 +70,12 @@ function Main(){
                     name= 'Matches' component={Matches} 
                     options={{
                         tabBarIcon: ({color})=>(
-                            <Icon name='heart' size={24} color={color}/>
+                            <Icon name='comment-dots' size={24} color={color}/>
                         )
                     }}
                 />
             </Tab.Navigator>
+        </HeaderContext.Provider>
     )
 }
 

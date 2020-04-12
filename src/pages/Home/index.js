@@ -1,38 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { SafeAreaView, View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import api from '../../services/api';
 
 import logo from '../../assets/logo.png';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
+import defaultAvatar from '../../assets/blank-profile-picture.png';
+
+import HeaderContext from '../../components/context';
 
 import styles from './styles';
 
 function Home({ navigation }){
+    const { toggleView } = useContext(HeaderContext);
     const [id, setId] = useState('');
+    const [user, setUser] = useState('');
     const [users, setUsers] = useState([]);
     const age = 25;
 
     useEffect(() => {
-        async function getUserId(){
-            try{
-                const _id = await AsyncStorage.getItem('id');
-                const user = await AsyncStorage.getItem('user');
-                setId(_id);
-                loadUsers();
-            }catch(error){
-                console.log('Get user error', error);
-            }
-        }
-        getUserId();
-    }, [id]);
+      async function getUser(){
+        const item = await AsyncStorage.getItem('user');
+        const parsedItem = JSON.parse(item);
+        setUser(parsedItem);
+        loadUsers(parsedItem);
+      }
+      getUser();
+    }, []);
 
-    async function loadUsers() {
+    async function loadUsers(user) {
         try{
-            const response = await api.get(`/user/find?_id=${id}`);
-
-            const user = response.data;
 
             const { interest } = user;
             
@@ -44,17 +43,13 @@ function Home({ navigation }){
         }
     }
 
-    async function handleLogout() {
-        await AsyncStorage.clear()
-
-        navigation.navigate('Login');
+    function handleInfo(target) {
+      toggleView();
+      navigation.navigate('Detail', { target });
     }
     
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={async() => handleLogout()}>
-                <Image style={styles.logo} source={logo}/>
-            </TouchableOpacity>
             <View style={styles.cardsContainer}>
                 { 
                     users.length === 0
@@ -62,10 +57,19 @@ function Home({ navigation }){
                     : (
                         users.map((user, index) => (
                             <View key={user._id} style={[styles.card, { zIndex: users.length - index }]}>
-                                <Image style={styles.avatar} source={{uri: user.photos}}/>
+                                <Image
+                                    style={styles.avatar}
+                                    source={ user.photos == ''? defaultAvatar : {uri: user.photos}}
+                                />
                                 <View style={styles.footer}>
                                     <Text style={styles.name}>{user.name}</Text>
                                     <Text style={styles.bio} numberOfLines={3}>{user.bio}</Text>
+                                    <TouchableOpacity
+                                      style={styles.info}
+                                      onPress={() => handleInfo(user)}
+                                    >
+                                      <Feather name="info" color="#585858" size={23} />
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         ))
@@ -74,11 +78,11 @@ function Home({ navigation }){
             </View>
             <View style={styles.buttonsContainer}>
                 <TouchableOpacity style={styles.button}>
-                    <Image source={dislike}/>
+                    <Feather name="x" color="#b5b5b5" size={32} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.button}>
-                    <Image source={like}/>
+                    <FontAwesome name="heart" color="#F50000" size={32} />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

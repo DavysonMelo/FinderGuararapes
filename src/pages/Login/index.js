@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Image, TextInput, TouchableOpacity, Text, AsyncStorage, Alert } from 'react-native';
+import { View, StyleSheet, Image, TextInput, TouchableOpacity, Text, AsyncStorage, Alert } from 'react-native';
 
 import api from '../../services/api';
 
@@ -20,10 +20,10 @@ function Login({ navigation }){
     useEffect(() => {
         async function handleAuthorizedUser(){
             try{
-                const id = await AsyncStorage.getItem('id');
+                const item = await AsyncStorage.getItem('user');
 
-                if(id) {
-                    navigation.navigate('Main',  { id } );
+                if(item) {
+                    navigation.navigate('Main', item );
                 }
             }catch(error){
                 console.log('Erro async storage', error);
@@ -50,16 +50,15 @@ function Login({ navigation }){
                 setModalVisibility(true);
                 const response = await api.post('/login', {email, password});
                 
-                const { _id } = response.data;
+                const user = response.data;
 
                 const item = JSON.stringify(response.data);
 
-                if(_id){
+                if(user){
                     
-                    await AsyncStorage.setItem('id', _id);
                     await AsyncStorage.setItem('user', item);
 
-                    navigation.navigate('Main', {id: _id });
+                    navigation.navigate('Main', item);
 
                     setEmail('');
                     setPassword('');
@@ -85,7 +84,7 @@ function Login({ navigation }){
     }
 
     return (
-        <KeyboardAvoidingView style={styles.container} behavior='padding' enabled>
+        <View style={styles.container} behavior='padding' enabled>
             <LoadingModal visible={modalVisible}/>
             <Image style={styles.logo} source={logo}/>
             <TextInput 
@@ -113,7 +112,7 @@ function Login({ navigation }){
                 <Text style={styles.registerButtonText}>Cadastre-se</Text>
             </TouchableOpacity>
             
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 

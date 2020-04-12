@@ -17,6 +17,7 @@ export default StyleSheet.create({
     },
 
     title: {
+        marginTop: 15,
         alignSelf: 'center',
         fontSize: 28,
         fontWeight: 'bold',
@@ -92,7 +93,7 @@ export default StyleSheet.create({
 
     plus: {
         position: 'absolute',
-        marginTop: 42,
-        marginLeft: 48,
+        top: 42,
+        left: 48,
     }
 });
