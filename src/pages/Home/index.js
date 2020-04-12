@@ -4,9 +4,6 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import api from '../../services/api';
 
-import logo from '../../assets/logo.png';
-import like from '../../assets/like.png';
-import dislike from '../../assets/dislike.png';
 import defaultAvatar from '../../assets/blank-profile-picture.png';
 
 import HeaderContext from '../../components/context';
@@ -35,7 +32,11 @@ function Home({ navigation }){
 
             const { interest } = user;
             
-            const res = await api.get(`/users/search?gender=${interest}&age=${age}`);
+            const res = await api.get(`/users/search?gender=${interest}&age=${age}`, {
+              headers: {
+                id: user._id
+              }
+            });
             setUsers(res.data);
 
         }catch(error){
@@ -46,6 +47,27 @@ function Home({ navigation }){
     function handleInfo(target) {
       toggleView();
       navigation.navigate('Detail', { target });
+    }
+
+    async function handleLike() {
+      const [{ _id }, ...rest] = users;
+      try {
+
+        await api.post(`/user/${_id}/likes`, null, {
+          headers: {
+            user: user._id
+          }
+        });
+
+        setUsers(rest);
+      }catch(error) {
+        console.log('Like error', error);
+      }
+    }
+
+    function handleDislike() {
+      const [targetUser, ... rest] = users;
+      setUsers([...rest, targetUser]);
     }
     
     return (
@@ -77,11 +99,17 @@ function Home({ navigation }){
                 }
             </View>
             <View style={styles.buttonsContainer}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleDislike}
+                >
                     <Feather name="x" color="#b5b5b5" size={32} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleLike}
+                >
                     <FontAwesome name="heart" color="#F50000" size={32} />
                 </TouchableOpacity>
             </View>
