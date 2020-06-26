@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { StatusBar } from 'react-native';
 
 import Info from './Info';
 import Settings from './Settings';
@@ -21,6 +22,12 @@ function Main() {
     }
 
     return(
+		<>
+		    <StatusBar
+					barStyle="dark-content"
+					backgroundColor="transparent"
+					translucent
+      	/>
         <HeaderContext.Provider value={{ toggleView }}>
             <Tab.Navigator
                 swipeEnabled={showHeader}
@@ -45,7 +52,7 @@ function Main() {
                         shadowRadius: 0,
                         elevation: 0,
                         backgroundColor: '#f5f5f5',
-                        display: displayHeader
+                        display: displayHeader,
                     }
                 }}
                 initialRouteName='Info'
@@ -56,14 +63,14 @@ function Main() {
                         tabBarIcon: ({color})=>(
                             <Icon name='user' size={21} color={color}/>
                         )
-                    }}
+										}}
                 />
                 <Tab.Screen
                     name= 'Info' component={Info}
                     options={{
                         tabBarIcon: ({color})=>(
                             <Icon name='fire' size={25} color={color}/>
-                        )
+												)
                     }}
                 />
                 <Tab.Screen
@@ -76,6 +83,7 @@ function Main() {
                 />
             </Tab.Navigator>
         </HeaderContext.Provider>
+			</>
     )
 }
 

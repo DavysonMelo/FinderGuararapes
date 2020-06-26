@@ -1,60 +1,70 @@
-import React, {useState, useEffect, useContext} from 'react';
-import { SafeAreaView, StyleSheet, Image, Text, View, TouchableOpacity, AsyncStorage, BackHandler } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  AsyncStorage,
+  BackHandler,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-import styles from './styles';
+import styles from "./styles";
 
-import BackButton from '../../components/backButton';
+import BackButton from "../../components/backButton";
 
-import HeaderContext from '../../components/context';
+import HeaderContext from "../../components/context";
+
+import AuthContext from "../../components/auth";
 
 export default function ProfileSettings() {
-    const navigation = useNavigation();
-    const { toggleView } = useContext(HeaderContext);
+  const navigation = useNavigation();
+  const { toggleView } = useContext(HeaderContext);
 
-    const [user, setUser] = useState('');
+  const { signOut } = useContext(AuthContext);
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener(
-            'hardwareBackPress',
-            toggleView
-        );
+  const [user, setUser] = useState("");
 
-        async function getUser(){
-            const item = await AsyncStorage.getItem('user');
-            const parsedItem = JSON.parse(item);
-            setUser(parsedItem);
-        }
-        getUser();
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      toggleView
+    );
 
-        return () => backHandler.remove();
-    }, []);
-
-    function handleBack() {
-        toggleView();
-        navigation.goBack();
+    async function getUser() {
+      const item = await AsyncStorage.getItem("user");
+      const parsedItem = JSON.parse(item);
+      setUser(parsedItem);
     }
+    getUser();
 
-    navigation.setOptions({
-        headerLeft: () => (
-            <BackButton onPress={handleBack}/>
-        )
-    });
+    return () => backHandler.remove();
+  }, []);
 
-    async function handleLogout() {
-      await AsyncStorage.clear()
+  function handleBack() {
+    toggleView();
+    navigation.goBack();
+  }
 
-      navigation.navigate('Login');
-    }
+  navigation.setOptions({
+    headerLeft: () => <BackButton onPress={handleBack} />,
+  });
 
-    return(
-        <View style={styles.container}>
-            <TouchableOpacity
-              onPress={handleLogout}
-              style={styles.logoutButton}
-            >
-              <Text style={styles.logoutText}>Sair</Text>
-            </TouchableOpacity>
-        </View>
-    )
+  async function handleLogout() {
+    //await AsyncStorage.clear();
+
+    //navigation.navigate("Login");
+
+    signOut();
+  }
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+        <Text style={styles.logoutText}>Sair</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
